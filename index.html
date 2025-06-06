@@ -552,6 +552,28 @@
                 font-size: 16px;
             }
         }
+
+        /* تحسينات جديدة */
+        .btn-loading {
+            position: relative;
+            pointer-events: none;
+        }
+
+        .btn-loading::after {
+            content: "";
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease infinite;
+            right: 15px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -731,7 +753,7 @@
 
         // تحويل الأرقام العربية إلى إنجليزية
         function normalizeNumbers(str) {
-            const arabicNums = '٠١٢٣٤٥٦٧٨٩';
+            const arabicNums = '٠١٢٣٤٥٥٦٧٨٩';
             return str.replace(/[٠-٩]/g, d => arabicNums.indexOf(d));
         }
 
@@ -896,6 +918,11 @@
 
         // دالة لحفظ البيانات في الجداول
         function saveToSheet(data) {
+            const btn = document.getElementById('generateBtn');
+            btn.classList.add('btn-loading');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner"></i> جاري الحفظ...';
+
             // تطبيع جميع الحقول من الأرقام العربية
             const normalizedData = {};
             for (let key in data) {
@@ -906,20 +933,31 @@
                 }
             }
 
-            fetch("https://script.google.com/macros/s/AKfycbxX1IunW6k7AFmW7bzhbj-sfZZXtU-L2e5Yj6k86eprNIkdcIvts2AhlXYJJXI1AZF0OA/exec", {
+            // الرابط المعدل للسكريبت
+            const scriptUrl = "https://script.google.com/macros/s/AKfycbxQN6br5bl0yydK-XT_QlZrqmrVprjRt808uJAzfgyzMCp4SssiIePfG_LWecXuLLo2/exec";
+
+            fetch(scriptUrl, {
                 method: "POST",
                 body: JSON.stringify(normalizedData),
                 headers: {
                     "Content-Type": "application/json"
                 }
             })
-            .then(res => res.text())
+            .then(response => {
+                if (!response.ok) throw new Error('فشل في الحفظ');
+                return response.text();
+            })
             .then(msg => {
                 showNotification("✅ تم حفظ البلاغ في قاعدة البيانات", "success");
             })
             .catch(err => {
                 console.error(err);
-                showNotification("حدث خطأ أثناء الحفظ", "error");
+                showNotification("حدث خطأ أثناء الحفظ: " + err.message, "error");
+            })
+            .finally(() => {
+                btn.classList.remove('btn-loading');
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-cogs"></i> إنتاج البلاغ';
             });
         }
 
