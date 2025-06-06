@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام إنشاء البلاغات</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* =============== CSS Styles =============== */
+        :root {
+            --primary-color: #1B5E20;
+            --primary-dark: #0D3E12;
+            --primary-light: #4CAF50;
+            --secondary-color: #388E3C;
+            --accent-color: #8BC34A;
+            --light-bg: #f8faf8;
+            --white: #FFFFFF;
+            --text-color: #2c3e50;
+            --light-text: #7f8c8d;
+            --border-color: #e0e0e0;
+            --shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+            --transition: all 0.3s ease;
+            --border-radius: 12px;
+            --card-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f8fff8 0%, #f0f8f0 100%);
+            min-height: 100vh;
+            padding: 30px 15px;
+            color: var(--text-color);
+            -webkit-font-smoothing: antialiased;
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-color) 100%);
+            color: var(--white);
+            padding: 35px 25px;
+            text-align: center;
+            position: relative;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-color), var(--primary-light));
+        }
+
+        .header h1 {
+            font-size: 2.1rem;
+            margin-bottom: 12px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 i {
+            margin-left: 12px;
+            color: #FFEB3B;
+        }
+
+        .header p {
+            font-size: 1.05rem;
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        .content {
+            padding: 30px;
+            background: var(--white);
+        }
+
+        .form-section {
+            margin-bottom: 28px;
+            padding: 22px;
+            background: var(--light-bg);
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .form-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--primary-color), var(--accent-color));
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-size: 1.3rem;
+            color: var(--primary-dark);
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid rgba(76, 175, 80, 0.3);
+            font-weight: 700;
+        }
+
+        .section-title i {
+            color: var(--primary-color);
+            font-size: 1.4rem;
+            background: rgba(76, 175, 80, 0.12);
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--primary-dark);
+            font-size: 0.97rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group label i {
+            color: var(--primary-color);
+            width: 24px;
+            text-align: center;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 15px 18px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 16px;
+            transition: var(--transition);
+            background: var(--white);
+            color: var(--text-color);
+            -webkit-appearance: none;
+            font-family: 'Tajawal', sans-serif;
+            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.03);
+        }
+
+        input:focus, textarea:focus, select:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(27, 94, 32, 0.15);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+            line-height: 1.7;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 16px 20px;
+            background: rgba(139, 195, 74, 0.08);
+            border-radius: 8px;
+            border: 1px solid rgba(76, 175, 80, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .checkbox-group:hover {
+            border-color: var(--primary-color);
+            background: rgba(139, 195, 74, 0.12);
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            position: absolute;
+            opacity: 0;
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+            z-index: 1;
+        }
+
+        .checkbox-custom {
+            position: relative;
+            display: inline-block;
+            width: 22px;
+            height: 22px;
+            background: white;
+            border: 2px solid var(--primary-color);
+            border-radius: 5px;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+        }
+
+        .checkbox-group input[type="checkbox"]:checked + .checkbox-custom {
+            background-color: var(--primary-color);
+            border-color: var(--primary-dark);
+        }
+
+        .checkbox-group input[type="checkbox"]:checked + .checkbox-custom::after {
+            content: "\f00c";
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 13px;
+        }
+
+        .checkbox-group label {
+            margin: 0;
+            font-size: 1rem;
+            color: var(--text-color);
+            cursor: pointer;
+            flex: 1;
+            font-weight: 600;
+            padding-right: 5px;
+        }
+
+        .date-time-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+            margin: 30px 0 20px;
+        }
+
+        button {
+            padding: 18px;
+            border: none;
+            border-radius: 10px;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+            letter-spacing: 0.3px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            z-index: -1;
+            transform: translateX(-100%);
+            transition: transform 0.4s ease;
+        }
+
+        button:hover::before {
+            transform: translateX(0);
+        }
+
+        .btn-generate {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+        }
+
+        .btn-clear {
+            background: linear-gradient(135deg, var(--secondary-color) 0%, #2e7d32 100%);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .output-section {
+            margin-top: 28px;
+            padding: 25px;
+            background: var(--light-bg);
+            border-radius: var(--border-radius);
+            border: 1px solid #d0e8d0;
+            display: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+        }
+
+        .output-section.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .output-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 22px;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            padding: 10px 22px;
+            border-radius: 30px;
+            font-size: 15px;
+            font-weight: 700;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease;
+        }
+
+        .status-initial {
+            background: #e8f5e9;
+            color: var(--primary-dark);
+            border: 1px solid var(--primary-light);
+        }
+
+        .status-final {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+        }
+
+        .output-text {
+            background: var(--white);
+            padding: 22px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            font-family: 'Tajawal', sans-serif;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            direction: rtl;
+            text-align: right;
+            color: var(--text-color);
+            font-size: 16px;
+            max-height: 350px;
+            overflow-y: auto;
+            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.02);
+        }
+
+        /* تخصيص شريط التمرير */
+        .output-text::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .output-text::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .output-text::-webkit-scrollbar-thumb {
+            background: var(--primary-light);
+            border-radius: 10px;
+        }
+
+        .output-text::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-color);
+        }
+
+        .copy-btn {
+            margin-top: 22px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: var(--transition);
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .copy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+        }
+
+        .auto-fill-indicator {
+            font-size: 13px;
+            color: #666;
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 12px;
+            background: rgba(139, 195, 74, 0.06);
+            border-radius: 6px;
+            border-left: 2px solid var(--accent-color);
+        }
+
+        .auto-fill-indicator i {
+            color: var(--primary-color);
+            font-size: 14px;
+        }
+
+        .statement-note {
+            font-size: 14px;
+            color: #555;
+            margin-top: 12px;
+            background: rgba(139, 195, 74, 0.06);
+            padding: 14px;
+            border-radius: 8px;
+            border-left: 3px solid var(--accent-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 500;
+            line-height: 1.6;
+        }
+
+        .statement-note i {
+            color: var(--primary-color);
+            font-size: 16px;
+        }
+
+        .notification {
+            position: fixed;
+            top: 25px;
+            right: 20px;
+            left: 20px;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 16px 22px;
+            background: var(--primary-color);
+            color: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            transform: translateY(-150px);
+            transition: transform 0.4s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .notification.show {
+            transform: translateY(0);
+        }
+
+        .notification i {
+            font-size: 22px;
+        }
+
+        .system-footer {
+            text-align: center;
+            padding: 18px;
+            background: var(--light-bg);
+            border-top: 1px solid var(--border-color);
+            color: var(--light-text);
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                border-radius: 0;
+            }
+            
+            .date-time-group {
+                grid-template-columns: 1fr;
+            }
+            
+            .header {
+                padding: 25px 18px;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .content {
+                padding: 22px;
+            }
+            
+            .form-section {
+                padding: 18px;
+                margin-bottom: 22px;
+            }
+            
+            .section-title {
+                font-size: 1.2rem;
+                margin-bottom: 20px;
+            }
+            
+            .button-group {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+            
+            button {
+                padding: 15px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-file-alt"></i> نظام إنشاء البلاغات </h1>
+            <p>أداة متكاملة لإدارة وتوليد البلاغات بسرعة وكفاءة عالية</p>
+        </div>
+
+        <div class="content">
+            <form id="reportForm">
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-cog"></i>
+                        إعدادات البلاغ
+                    </h3>
+                    
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="hajjOption">
+                        <span class="checkbox-custom"></span>
+                        <label for="hajjOption">بلاغ حج 🕋</label>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-clipboard-list"></i>
+                        بيانات البلاغ الأساسية
+                    </h3>
+                    
+                    <div class="form-group">
+                        <label for="status"><i class="fas fa-exclamation-triangle"></i> الحالة:</label>
+                        <input type="text" id="status" required placeholder="أدخل تصنيف البلاغ">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="location"><i class="fas fa-map-marker-alt"></i> الموقع:</label>
+                        <input type="text" id="location" required placeholder="أدخل موقع البلاغ">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="reportNumber"><i class="fas fa-hashtag"></i> رقم البلاغ:</label>
+                        <input type="text" id="reportNumber" required placeholder="أدخل رقم البلاغ">
+                        <div class="auto-fill-indicator">
+                            <i class="fas fa-magic"></i>
+                            الأرقام الإنجليزية تتحول لعربية تلقائياً
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-clock"></i>
+                        التاريخ والوقت
+                    </h3>
+                    
+                    <div class="date-time-group">
+                        <div class="form-group">
+                            <label for="reportDate"><i class="fas fa-calendar"></i> تاريخ البلاغ:</label>
+                            <input type="text" id="reportDate" required placeholder="مثال: ١٢/٠٥">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="reportTime"><i class="fas fa-clock"></i> وقت البلاغ:</label>
+                            <input type="text" id="reportTime" required placeholder="مثال: ١٣:٤٥">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-user"></i>
+                        بيانات المبلغ
+                    </h3>
+                    
+                    <div class="form-group">
+                        <label for="reporterName"><i class="fas fa-user-tag"></i> اسم المبلغ:</label>
+                        <input type="text" id="reporterName" required placeholder="أحرف ومسافات فقط">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="nationality"><i class="fas fa-flag"></i> الجنسية:</label>
+                        <input type="text" id="nationality" required placeholder="أحرف ومسافات فقط">
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-file-alt"></i>
+                        تفاصيل البلاغ
+                    </h3>
+                    
+                    <div class="form-group">
+                        <label for="description"><i class="fas fa-align-left"></i> وصف الحالة:</label>
+                        <textarea id="description" required placeholder="أدخل وصفًا مفصلاً للحالة"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="statement"><i class="fas fa-comment-alt"></i> الإفادة:</label>
+                        <textarea id="statement" placeholder="أدخل الإفادة (اختياري)"></textarea>
+                        <div class="statement-note">
+                            <i class="fas fa-lightbulb"></i>
+                            ملاحظة: إذا كانت الإفادة فارغة = بلاغ مبدئي | إذا تم ملء الإفادة = بلاغ نهائي
+                        </div>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button type="button" id="generateBtn" class="btn-generate">
+                        <i class="fas fa-cogs"></i>
+                        إنتاج البلاغ
+                    </button>
+                    <button type="button" id="clearBtn" class="btn-clear">
+                        <i class="fas fa-trash-alt"></i>
+                        مسح البيانات
+                    </button>
+                </div>
+            </form>
+
+            <div id="outputSection" class="output-section">
+                <div class="output-header">
+                    <span id="statusIndicator" class="status-indicator">
+                        <i class="fas fa-file-contract"></i> حالة البلاغ
+                    </span>
+                </div>
+                <div id="outputText" class="output-text"></div>
+                <button id="copyBtn" class="copy-btn">
+                    <i class="fas fa-copy"></i>
+                    نسخ النص
+                </button>
+            </div>
+        </div>
+        
+        <div class="system-footer">
+            <p>© 2025 iSaleh. All rights reserved.</p>
+        </div>
+    </div>
+
+    <div id="notification" class="notification">
+        <i class="fas fa-check-circle"></i>
+        <span>تم نسخ النص بنجاح!</span>
+    </div>
+
+    <script>
+        // =============== JavaScript Code ===============
+        // متغيرات النظام
+        let currentOutput = '';
+        const arabicNumerals = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+
+        // دالة لتحويل الأرقام الإنجليزية إلى عربية
+        function toArabicNumerals(str) {
+            return str.toString().replace(/[0-9]/g, function(match) {
+                return arabicNumerals[parseInt(match)];
+            });
+        }
+
+        // دالة لتنقية المدخلات من أي علامات HTML
+        function sanitizeInput(input) {
+            return input.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+
+        // دالة استرجاع قيم الحقول
+        function getFormData() {
+            return {
+                status: document.getElementById('status').value.trim(),
+                location: document.getElementById('location').value.trim(),
+                reportNumber: document.getElementById('reportNumber').value.trim(),
+                reportDate: document.getElementById('reportDate').value.trim(),
+                reportTime: document.getElementById('reportTime').value.trim(),
+                reporterName: document.getElementById('reporterName').value.trim(),
+                nationality: document.getElementById('nationality').value.trim(),
+                description: document.getElementById('description').value.trim(),
+                statement: document.getElementById('statement').value.trim(),
+                hajjOption: document.getElementById('hajjOption').checked
+            };
+        }
+
+        // تحويل الأرقام العربية إلى إنجليزية
+        function normalizeNumbers(str) {
+            const arabicNums = '٠١٢٣٤٥٦٧٨٩';
+            return str.replace(/[٠-٩]/g, d => arabicNums.indexOf(d));
+        }
+
+        // دالة التحقق من صحة المدخلات
+        function validateForm(data) {
+            // تأكد من ملء الحقول المطلوبة
+            const required = ['status', 'location', 'reportNumber', 'reportDate', 'reportTime', 'reporterName', 'nationality', 'description'];
+            const missing = required.filter(field => !data[field]);
+            if (missing.length > 0) {
+                showNotification('يرجى ملء جميع الحقول المطلوبة', 'error');
+                return false;
+            }
+
+            // تطبيع الأرقام للتحقق من الصحة
+            const normalizedDate = normalizeNumbers(data.reportDate);
+            const normalizedTime = normalizeNumbers(data.reportTime);
+
+            // التحقق من صيغة الوقت (أرقام ونقطتين فقط، مثال: 13:45)
+            const timeRegex = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/;
+            if (!timeRegex.test(normalizedTime)) {
+                showNotification('صيغة الوقت غير صحيحة، يجب أن تكون أرقامًا ونقطتين (مثال: 13:45)', 'error');
+                return false;
+            }
+
+            // التحقق من صيغة التاريخ (أرقام وعلامة "/" فقط، مثال: 12/05)
+            const dateRegex = /^\d{1,2}\/\d{1,2}$/;
+            if (!dateRegex.test(normalizedDate)) {
+                showNotification('صيغة التاريخ غير صحيحة، يجب أن تكون أرقامًا وعلامة / فقط (مثال: 12/05)', 'error');
+                return false;
+            }
+
+            // التحقق من اسم المبلغ (حروف عربية أو لاتينية ومسافات فقط)
+            const nameRegex = /^[\u0600-\u06FFa-zA-Z ]+$/;
+            if (!nameRegex.test(data.reporterName)) {
+                showNotification('اسم المبلغ يجب أن يحتوي على حروف ومسافات فقط', 'error');
+                return false;
+            }
+
+            // التحقق من الجنسية (حروف عربية أو لاتينية ومسافات فقط)
+            if (!nameRegex.test(data.nationality)) {
+                showNotification('الجنسية يجب أن تحتوي على حروف ومسافات فقط', 'error');
+                return false;
+            }
+
+            return true;
+        }
+
+        // دالة عرض البلاغ الناتج
+        function displayOutput(text, isInitial) {
+            const statusIndicator = document.getElementById('statusIndicator');
+            const outputText = document.getElementById('outputText');
+            const outputSection = document.getElementById('outputSection');
+
+            if (isInitial) {
+                statusIndicator.innerHTML = '<i class="fas fa-file-contract"></i> بلاغ مبدئي';
+                statusIndicator.className = 'status-indicator status-initial';
+            } else {
+                statusIndicator.innerHTML = '<i class="fas fa-check-circle"></i> بلاغ نهائي - مغلق';
+                statusIndicator.className = 'status-indicator status-final';
+            }
+
+            outputText.textContent = text;
+            outputSection.classList.add('show');
+            currentOutput = text;
+            outputSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // دالة توليد البلاغ
+        function generateReport() {
+            const data = getFormData();
+            if (!validateForm(data)) return;
+
+            const isInitial = !data.statement;
+
+            // تنظيف المدخلات
+            for (let key in data) {
+                if (typeof data[key] === 'string') {
+                    data[key] = sanitizeInput(data[key]);
+                }
+            }
+
+            let report = '';
+            if (data.hajjOption) {
+                report += '*📍حج ١٤٤٦*\n\n';
+            }
+
+            report += `• الحــالـة: *${toArabicNumerals(data.status)}*
+• الموقــع: ${toArabicNumerals(data.location)}
+• رقم البلاغ: ${toArabicNumerals(data.reportNumber)}
+> تاريـخ البـلاغ: ${toArabicNumerals(data.reportDate)}
+> وقت البــلاغ: ${toArabicNumerals(data.reportTime)}
+> ⁠اسـم المبلـغ: ${toArabicNumerals(data.reporterName)}
+> الجـنـسـيــة: ${toArabicNumerals(data.nationality)}
+ • ⁠وصف الحالة: ${toArabicNumerals(data.description)}
+ • ⁠الإفــــــــادة: ${toArabicNumerals(data.statement) || ''}`;
+
+            displayOutput(report, isInitial);
+            return data;
+        }
+
+        // دالة نسخ النص إلى الحافظة
+        function copyToClipboard() {
+            if (!currentOutput) {
+                showNotification('لا يوجد نص للنسخ', 'warning');
+                return;
+            }
+
+            navigator.clipboard.writeText(currentOutput).then(() => {
+                showNotification('تم نسخ النص بنجاح', 'success');
+            }).catch(() => {
+                showNotification('حدث خطأ في النسخ. يرجى نسخ النص يدوياً.', 'error');
+            });
+        }
+
+        // دالة عرض الإشعار
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            const icon = notification.querySelector('i');
+            const text = notification.querySelector('span');
+
+            text.textContent = message;
+            notification.className = 'notification';
+
+            if (type === 'success') {
+                notification.style.background = 'linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%)';
+                icon.className = 'fas fa-check-circle';
+            } else if (type === 'error') {
+                notification.style.background = 'linear-gradient(135deg, #d9534f, #c9302c)';
+                icon.className = 'fas fa-exclamation-circle';
+            } else {
+                notification.style.background = 'linear-gradient(135deg, #f0ad4e, #ec971f)';
+                icon.className = 'fas fa-exclamation-triangle';
+            }
+
+            notification.classList.add('show');
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // دالة مسح النموذج
+        function clearForm() {
+            if (confirm('هل أنت متأكد من مسح جميع البيانات؟')) {
+                document.getElementById('reportForm').reset();
+                document.getElementById('outputSection').classList.remove('show');
+                document.getElementById('hajjOption').checked = false;
+                currentOutput = '';
+                showNotification('تم مسح النموذج بنجاح', 'success');
+            }
+        }
+
+        // دالة لتحويل الأرقام داخل حقل رقم البلاغ أثناء الكتابة
+        function initReportNumberConversion() {
+            document.getElementById('reportNumber').addEventListener('input', function(e) {
+                let value = e.target.value;
+                let arabicValue = value.replace(/[0-9]/g, function(match) {
+                    return arabicNumerals[parseInt(match)];
+                });
+                e.target.value = arabicValue;
+            });
+        }
+
+        // دالة لحفظ البيانات في الجداول
+        function saveToSheet(data) {
+            // تطبيع جميع الحقول من الأرقام العربية
+            const normalizedData = {};
+            for (let key in data) {
+                if (typeof data[key] === 'string') {
+                    normalizedData[key] = normalizeNumbers(data[key]);
+                } else {
+                    normalizedData[key] = data[key];
+                }
+            }
+
+            fetch("https://script.google.com/macros/s/AKfycbxX1IunW6k7AFmW7bzhbj-sfZZXtU-L2e5Yj6k86eprNIkdcIvts2AhlXYJJXI1AZF0OA/exec", {
+                method: "POST",
+                body: JSON.stringify(normalizedData),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+            .then(res => res.text())
+            .then(msg => {
+                showNotification("✅ تم حفظ البلاغ في قاعدة البيانات", "success");
+            })
+            .catch(err => {
+                console.error(err);
+                showNotification("حدث خطأ أثناء الحفظ", "error");
+            });
+        }
+
+        // التهيئة عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            initReportNumberConversion();
+            
+            document.getElementById('generateBtn').addEventListener('click', function() {
+                const formData = generateReport();
+                if (formData) {
+                    saveToSheet(formData);
+                }
+            });
+            
+            document.getElementById('clearBtn').addEventListener('click', clearForm);
+            document.getElementById('copyBtn').addEventListener('click', copyToClipboard);
+        });
+    </script>
+</body>
+</html>
