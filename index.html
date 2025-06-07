@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نظام إدارة البلاغات</title>
+    <title>نظام إنشاء البلاغات</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
     <style>
@@ -46,7 +46,7 @@
             box-shadow: var(--shadow);
             width: 100%;
             max-width: 900px;
-            margin-bottom: 30px; /* مسافة بين الأقسام */
+            margin-bottom: 30px;
         }
 
         .header {
@@ -209,23 +209,23 @@
             gap: 5px;
         }
 
-        /* ====== أنماط جديدة للبحث والجدول ====== */
+        /* ====== أنماط جديدة للبحث والجدول فقط ====== */
         .search-form {
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
             margin-bottom: 20px;
-            align-items: flex-end;
+            align-items: flex-end; /* لمحاذاة أزرار البحث بالأسفل */
         }
         .search-form .form-group {
             flex: 1;
             min-width: 250px;
-            margin-bottom: 0;
+            margin-bottom: 0; /* لإزالة المسافة الزائدة من أسفل مجموعات النموذج في البحث */
         }
         .search-form .form-actions {
-            flex-basis: 100%;
+            flex-basis: 100%; /* لجعل أزرار البحث تأخذ عرض 100% */
             text-align: center;
-            margin-top: 0; /* لأنها داخل search-form */
+            margin-top: 0; /* لإزالة المسافة الزائدة من أعلى أزرار البحث */
         }
         .reports-table {
             width: 100%;
@@ -233,20 +233,20 @@
             margin-top: 20px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
             border-radius: 8px;
-            overflow: hidden;
+            overflow: hidden; /* لضمان ظهور الزوايا المدورة للخلايا الأولى والأخيرة */
         }
         .reports-table th, .reports-table td {
             padding: 12px 15px;
             text-align: right;
             border-bottom: 1px solid var(--border-color);
             vertical-align: top; /* محاذاة النص للأعلى في الخلايا */
+            font-size: 0.9em; /* لتصغير حجم الخط قليلاً في الجدول */
         }
         .reports-table th {
-            background-color: var(--primary-color); /* غيرتها لـ primary-color لتتناسب مع باقي تصميمك */
+            background-color: var(--primary-color);
             color: var(--white);
             font-weight: bold;
             text-transform: uppercase;
-            font-size: 0.9em;
         }
         .reports-table tbody tr:nth-child(even) {
             background-color: var(--light-bg);
@@ -263,21 +263,21 @@
             cursor: pointer;
             font-size: 0.85em;
             transition: var(--transition);
-            margin-left: 5px;
+            margin-left: 5px; /* مسافة بين الأزرار */
         }
         .reports-table .action-buttons button:hover {
             background-color: var(--primary-dark);
         }
         .reports-table .action-buttons .edit-btn {
-            background-color: #007bff;
+            background-color: #007bff; /* لون مختلف لزر التعديل */
         }
         .reports-table .action-buttons .edit-btn:hover {
             background-color: #0056b3;
         }
         .table-responsive {
-            overflow-x: auto;
+            overflow-x: auto; /* لجعل الجدول قابلاً للتمرير أفقياً على الشاشات الصغيرة */
         }
-        /* ====== نهاية أنماط جديدة للبحث والجدول ====== */
+        /* نهاية أنماط جديدة للبحث والجدول */
     </style>
 </head>
 <body>
@@ -402,7 +402,8 @@
     <div id="notification" class="notification"></div>
 
     <script>
-        const scriptUrl = "https://script.google.com/macros/s/AKfycbyn9C5y5bEYs4ffzlum-1gSqYzmo1LhoVUOk7y6A9owkKkv03_mE6taF-637oR5pdIp/exec"; // **تأكد من أن هذا هو رابط exec الأخير والخاص بالسكريبت الخاص بك**
+        // **مهم جداً: تأكد من تحديث هذا الرابط إلى رابط exec الخاص بنشر Google Apps Script الخاص بك**
+        const scriptUrl = "https://script.google.com/macros/s/AKfycbxhgaaX82NQxnk_gUuCu0csM_g8p6n6GDXYq0S97pkt3IJD4HNzaJ0GrVcUX8-nahL3/exec"; 
 
         function showNotification(message, type) {
             const notificationDiv = document.getElementById('notification');
@@ -416,7 +417,6 @@
         // دالة تحويل الأرقام الإنجليزية إلى عربية
         function initReportNumberConversion() {
             const reportNumberInput = document.getElementById('reportNumber');
-            // تأكد من وجود حقل الإدخال قبل إضافة المستمع
             if (reportNumberInput) {
                 reportNumberInput.addEventListener('input', function() {
                     const arabicNumerals = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
@@ -435,11 +435,10 @@
             }
         }
 
-        // دالة لتوليد بيانات النموذج
         function generateReport() {
             const form = document.getElementById('reportForm');
             if (!form.checkValidity()) {
-                form.reportValidity(); // عرض رسائل التحقق الافتراضية للمتصفح
+                form.reportValidity();
                 showNotification("الرجاء ملء جميع الحقول المطلوبة.", "warning");
                 return null;
             }
@@ -448,7 +447,6 @@
             return formData;
         }
 
-        // دالة لإرسال البيانات إلى الشيت (لإنشاء بلاغ جديد)
         async function saveToSheet(formData) {
             // إضافة action لتوجيه السكريبت لإنشاء بلاغ جديد
             formData.append('action', 'createReport');
@@ -474,12 +472,12 @@
                         showNotification("فشل في الحفظ: " + errorMessage, "error");
                     }
                     console.error("خطأ في استجابة السكريبت:", data);
-                    return; // لا تكمل في حالة الخطأ
+                    return;
                 }
 
                 showNotification("✅ تم حفظ البلاغ بنجاح", "success");
-                clearForm(); // مسح النموذج بعد الحفظ الناجح
-                resetFormAndButtonToCreateNew(); // إعادة الزر لوضع إنشاء جديد
+                clearForm();
+                resetFormAndButtonToCreateNew();
 
             } catch (err) {
                 console.error("خطأ في حفظ البيانات:", err);
@@ -493,7 +491,7 @@
 
         function clearForm() {
             document.getElementById('reportForm').reset();
-            resetFormAndButtonToCreateNew(); // تأكد من إعادة الزر لوضع إنشاء جديد
+            resetFormAndButtonToCreateNew();
             showNotification("تم مسح النموذج.", "info");
         }
 
@@ -518,7 +516,7 @@
                 جنسية المبلغ: ${nationality || 'غير محددة'}
                 وصف الحالة: ${description}
                 الإفادة: ${statement}
-            `.trim().replace(/^\s*\n/gm, ''); // إزالة الأسطر الفارغة الزائدة
+            `.trim().replace(/^\s*\n/gm, '');
 
             navigator.clipboard.writeText(reportText).then(() => {
                 showNotification("✅ تم نسخ البلاغ إلى الحافظة!", "success");
@@ -581,6 +579,7 @@
                     noResultsMessage.style.display = 'none';
                     data.forEach(report => {
                         const row = reportsTableBody.insertRow();
+                        // تأكد من أن أسماء الخصائص (report.status, report.location, إلخ) تطابق بالضبط ما يرجعه Apps Script
                         row.innerHTML = `
                             <td>${report.status || ''}</td>
                             <td>${report.location || ''}</td>
@@ -604,8 +603,9 @@
                     document.querySelectorAll('.edit-btn').forEach(button => {
                         button.addEventListener('click', function() {
                             const reportNumber = this.dataset.reportNumber;
-                            searchAndDisplayReports().then(() => { // إعادة البحث لضمان حصولنا على أحدث البيانات
-                                fillFormForEdit(reportNumber, data); // داتا هنا هي التي جاءت من البحث الأصلي
+                            // جلب أحدث بيانات البلاغات قبل ملء النموذج
+                            searchAndDisplayReports().then(() => {
+                                fillFormForEdit(reportNumber, data); // data هنا هي النتائج الأخيرة للبحث
                             });
                         });
                     });
@@ -631,6 +631,9 @@
                 document.getElementById('status').value = reportToEdit.status || '';
                 document.getElementById('location').value = reportToEdit.location || '';
                 document.getElementById('reportNumber').value = reportToEdit.reportNumber || '';
+                // قم بتعيين قيمة حقل رقم البلاغ للقراءة فقط لتجنب التغيير العرضي أثناء التعديل
+                document.getElementById('reportNumber').readOnly = true; 
+
                 document.getElementById('reportDate').value = reportToEdit.reportDate || '';
                 document.getElementById('reportTime').value = reportToEdit.reportTime || '';
                 document.getElementById('reporterName').value = reportToEdit.reporterName || '';
@@ -720,6 +723,8 @@
         function resetFormAndButtonToCreateNew() {
             const generateBtn = document.getElementById('generateBtn');
             generateBtn.innerHTML = '<i class="fas fa-cogs"></i> إنتاج البلاغ';
+            // إعادة تفعيل حقل رقم البلاغ للقراءة والكتابة
+            document.getElementById('reportNumber').readOnly = false;
             // إزالة مستمع التحديث إذا كان موجوداً وإعادة إضافة مستمع الإنشاء
             generateBtn.removeEventListener('click', handleUpdateReportClick);
             // التأكد من أن المستمع الأصلي لم يتم إزالته مرتين
@@ -733,7 +738,7 @@
         // دالة للتعامل مع النقر على زر "إنتاج البلاغ" الأصلي
         function handleGenerateButtonClick(event) {
             event.preventDefault(); // منع الإرسال الافتراضي للنموذج
-            const formData = generateReport(); // ستحصل على البيانات بعد التحقق والتنظيف
+            const formData = generateReport();
             if (formData) {
                 saveToSheet(formData);
             }
