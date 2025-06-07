@@ -1,3 +1,6 @@
+
+// النسخة الأخيرة بعد اضافة البحث والتعديل
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -737,9 +740,9 @@ function searchReport() {
 function fillFormWithData(data) {
     document.getElementById('status').value = data.status;
     document.getElementById('location').value = data.location;
-    document.getElementById('reportNumber').value = data.reportNumber;
-    document.getElementById('reportDate').value = data.reportDate;
-    document.getElementById('reportTime').value = data.reportTime;
+    document.getElementById('reportNumber').value = toArabicNumerals(data.reportNumber);
+    document.getElementById('reportDate').value = toArabicNumerals(data.reportDate);
+    document.getElementById('reportTime').value = toArabicNumerals(data.reportTime);
     document.getElementById('reporterName').value = data.reporterName;
     document.getElementById('nationality').value = data.nationality;
     document.getElementById('description').value = data.description;
@@ -1030,7 +1033,7 @@ function updateReport() {
 
             // الرابط المعدل للسكريبت
                         // الرابط الجديد لسكرت Google Apps Script الخاص بك
-            const scriptUrl = "https://script.google.com/macros/s/AKfycbxWWk8zegCDwS9956PfpJKaivhBqBJ-0QzU9tYXswjXz7w3twAzJTK_OdzJ6eeagomZ/exec";
+            const scriptUrl = "https://script.google.com/macros/s/AKfycby_RGwRV6kAhS3DQ1QLyvwdix3NVOrk2J6Lpx9sVrlysriDAViuRnQb1mVQhpAj6kgt/exec";
  
 
 
