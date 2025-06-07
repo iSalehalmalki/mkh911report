@@ -720,7 +720,7 @@ function searchReport() {
     const query = document.getElementById("searchQuery").value.trim();
     if (!query) return showNotification("يرجى إدخال رقم البلاغ أو اسم المبلغ", "warning");
 
-    fetch("https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec?search=" + encodeURIComponent(query))
+    fetch("https://script.google.com/macros/s/AKfycby9Q4kUhSfLPo5vQNBc7_qRGlTkpUiLqNozzeRAZsxRdInvfjkVpDNl6A9ZW6DcFdQb/exec?search=" + encodeURIComponent(query))
         .then(res => res.json())
         .then(data => {
             if (data.status === "not_found") {
@@ -757,7 +757,7 @@ function updateReport() {
     }
     formData.append("action", "update");
 
-    fetch("https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec", {
+    fetch("https://script.google.com/macros/s/AKfycby9Q4kUhSfLPo5vQNBc7_qRGlTkpUiLqNozzeRAZsxRdInvfjkVpDNl6A9ZW6DcFdQb/exec", {
         method: "POST",
         body: formData
     })
